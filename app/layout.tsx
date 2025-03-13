@@ -8,7 +8,7 @@ import { ConvexClientProvider } from "@/components/providers/convex-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Jotion",
+  title: "Hotion",
   description: "The connected workspace where better and faster work happens.",
   icons: {
     icon: [
@@ -40,7 +40,7 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-            storageKey="jotion-theme"
+            storageKey="hotion-theme"
           >
             <Toaster position="bottom-center" />
             {children}
