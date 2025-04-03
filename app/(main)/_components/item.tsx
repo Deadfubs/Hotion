@@ -1,5 +1,21 @@
 "use client";
 
+import { Id } from "@/convex/_generated/dataModel";
+import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/clerk-react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useMutation } from "convex/react";
 import {
   LucideIcon,
   ChevronDown,
@@ -8,21 +24,6 @@ import {
   MoreHorizontal,
   Trash,
 } from "lucide-react";
-import { Id } from "@/convex/_generated/dataModel";
-import { cn } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { useUser } from "@clerk/clerk-react";
 
 interface ItemProps {
   id?: Id<"documents">;
@@ -57,7 +58,7 @@ export const Item = ({
   const onArchive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
     if (!id) return;
-    const promise = archive({ id });
+    const promise = archive({ id }).then(() => router.push("/documents"));
 
     toast.promise(promise, {
       loading: "Moving to trash...",
@@ -81,7 +82,7 @@ export const Item = ({
         if (!expanded) {
           onExpand?.();
         }
-        //router.push(`/documents/${documentId}`);
+        router.push(`/documents/${documentId}`);
       }
     );
     toast.promise(promise, {
