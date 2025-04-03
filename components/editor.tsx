@@ -7,6 +7,7 @@ import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import "@blocknote/core/fonts/inter.css";
+import { useCallback, useEffect } from "react";
 
 interface EditorProps {
   onChange: (value: string) => void;
@@ -28,14 +29,22 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
     uploadFile: handleUpload,
   });
 
+  const handleChange = useCallback(() => {
+    onChange(JSON.stringify(editor.document, null, 2));
+  }, [editor, onChange]);
+
+  useEffect(() => {
+    if (initialContent) {
+      handleChange();
+    }
+  }, []);
+
   return (
     <div>
       <BlockNoteView
         editable={editable}
         editor={editor}
-        onChange={() => {
-          JSON.stringify(editor.document, null, 2);
-        }}
+        onChange={handleChange}
         theme={resolvedTheme === "dark" ? "dark" : "light"}
       />
     </div>
